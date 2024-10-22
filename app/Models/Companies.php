@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-class User extends Authenticatable
+
+class Companies extends Model
 {
     use HasApiTokens, Notifiable;
-    protected $fillable = ['type' , 'name' , 'email' , 'mobile' , 'national_code' , 'uuid' , 'is_admin'];
+    
+
 }

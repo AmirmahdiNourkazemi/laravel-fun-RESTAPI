@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('mobile')->nullable();
             $table->string('national_code')->unique()->nullable();
+            $table->string('name')->nullable();
             $table->uuid('uuid')->unique();
             $table->boolean('is_admin')->default(false);
             $table->timestamps();
