@@ -20,6 +20,17 @@ Route::middleware(['auth:sanctum'])->prefix('companies')->controller(CompaniesCo
     Route::delete('/{uuid}', 'delete');
 });
 
+
+//admin
+Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+  Route::prefix('companies')->controller(CompaniesController::class)->group(function () {
+    Route::get('/', 'index');
+  });
+});
+
+
+
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');

@@ -12,7 +12,7 @@ use DateTimeInterface;
 
 class Companies extends Model
 {
-    use HasUuid ,HasApiTokens, HasFactory, Notifiable ,Filterable;
+    use HasUuid ,HasApiTokens, HasFactory, Notifiable ;
     protected $guarded = [];
     const FUNDS = [
         'up_to_2' => 1,
