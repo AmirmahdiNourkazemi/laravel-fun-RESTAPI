@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompaniesController;
-
+use App\Http\Controllers\UserController;
 
 
 Route::prefix('auth')->controller(AuthController::class)->group(function(){
@@ -24,6 +24,9 @@ Route::middleware(['auth:sanctum'])->prefix('companies')->controller(CompaniesCo
 //admin
 Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
   Route::prefix('companies')->controller(CompaniesController::class)->group(function () {
+    Route::get('/', 'index');
+  });
+  Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index');
   });
 });

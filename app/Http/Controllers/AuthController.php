@@ -19,10 +19,10 @@ class AuthController extends Controller
         ]);
      
     $user = User::where('national_code', $request->national_code)->where('mobile', $request->mobile)->first();
-    $token = $user->createToken('token')->plainTextToken;
+    
     
     if ($user) {
-       
+        $token = $user->createToken('token')->plainTextToken;
         return response()->json([
                 'message' => 'success',
                 'user' => $user,
