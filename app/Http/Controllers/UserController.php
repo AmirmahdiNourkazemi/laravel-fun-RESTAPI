@@ -9,7 +9,7 @@ class UserController extends Controller
     public function index() 
     {
         $user = auth()->user();
-        $users = User::get();
+        $users = User::paginate(10);
         return $users;
     }  
 }
