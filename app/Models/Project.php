@@ -7,8 +7,18 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\HasUuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Project extends Model
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+class Project extends Model implements HasMedia
 {
-    use HasUuid ,HasApiTokens, Notifiable, softDeletes;
+    use HasUuid ,HasApiTokens, Notifiable, softDeletes ,InteractsWithMedia;
     protected $guarded = [];
+    protected $appends = ['images'];
+    protected $hidden = ['media'];
+    protected $with = ['media'];
+    public function getImagesAttribute()
+    {
+        return $this->media->where('collection_name', 'images')->map->only(['uuid', 'original_url', 'name', 'collection_name'])->values();
+    }
+
 }

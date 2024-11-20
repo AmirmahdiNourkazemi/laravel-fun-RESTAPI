@@ -68,4 +68,29 @@ class ProjectController extends Controller
         $user = auth()->user();
         return $request;
     }
+
+
+    public function uploadMedia(Request $request, $uuid)
+    {
+        $data = $request->validate([
+            'collection' => 'string|required',
+            'name' => 'string',
+            'file' => 'file|required',
+        ]);
+        if (!$project = Project::withTrashed()->where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        $path = $request->file('file')->store('temps', 'public');
+
+        $media = $project->addMediaFromDisk($path, 'public')
+            ->usingName($data['name'] ?? '')
+            ->toMediaCollection($data['collection']);
+
+        return response()->json([
+            'media' => $media
+        ]);
+    }
 }

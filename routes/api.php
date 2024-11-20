@@ -38,7 +38,8 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
   Route::prefix('project')->controller(ProjectController::class)->group(function () {
     Route::post('/', 'store');
     Route::get('/', 'index');
-    Route::patch('/{uuid}', 'update');
+    Route::post('/{uuid}', 'update');
+    Route::post('/{uuid}/media', 'uploadMedia');
   });
 });
 
