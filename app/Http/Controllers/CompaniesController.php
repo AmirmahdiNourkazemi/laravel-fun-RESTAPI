@@ -11,7 +11,7 @@ class CompaniesController extends Controller
     public function index() 
     {
         $user = auth()->user();
-        $companies = $user->companies()->get();
+        $companies = $user->companies()->paginate();
         return $companies;
     }
 
