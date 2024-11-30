@@ -92,5 +92,32 @@ class ProjectController extends Controller
         return response()->json([
             'media' => $media
         ]);
+
+
     }
+
+    public function storeComment(Request $request, $uuid)
+    {
+        $data = $request->validate([
+            'body' => 'string|required',
+            'parent_id' => 'integer|exists:comments,id|nullable',
+        ]);
+
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        $project->comments()->create([
+            'user_id' => auth()->user()->id,
+            'body' => $data['body'],
+            'parent_id' => $data['parent_id'] ?? null,
+        ]);
+
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }  
+
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
-
+use App\Http\Controllers\CommentController;
 
 Route::prefix('auth')->controller(AuthController::class)->group(function(){
     Route::post('login','login');
@@ -24,7 +24,9 @@ Route::middleware(['auth:sanctum'])->prefix('companies')->controller(CompaniesCo
 
 Route::middleware(['auth:sanctum'])->prefix('projects')->controller(ProjectController::class)->group(function () {
   Route::get('/', 'index');
+  Route::post('/{uuid}/comments', 'storeComment');
 });
+
 
 
 //admin
@@ -32,6 +34,10 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
   Route::prefix('companies')->controller(CompaniesController::class)->group(function () {
     Route::get('/', 'index');
   });
+  Route::prefix('comments')->controller(CommentController::class)->group(function () {
+    Route::get('/', 'index');
+  });
+  
   Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index');
   });

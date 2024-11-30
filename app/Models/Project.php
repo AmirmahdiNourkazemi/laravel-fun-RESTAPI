@@ -20,5 +20,8 @@ class Project extends Model implements HasMedia
     {
         return $this->media->where('collection_name', 'images')->map->only(['uuid', 'original_url', 'name', 'collection_name'])->values();
     }
-
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
 }
