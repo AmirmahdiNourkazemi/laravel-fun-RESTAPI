@@ -7,6 +7,8 @@ use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\AdminTicketController;
+use App\Http\Controllers\TicketController;
 
 Route::prefix('auth')->controller(AuthController::class)->group(function(){
     Route::post('login','login');
@@ -20,12 +22,29 @@ Route::middleware(['auth:sanctum'])->prefix('companies')->controller(CompaniesCo
     Route::patch('/{uuid}', 'update');
     Route::delete('/{uuid}', 'delete');
 });
-
-
-Route::middleware(['auth:sanctum'])->prefix('projects')->controller(ProjectController::class)->group(function () {
-  Route::get('/', 'index');
-  Route::post('/{uuid}/comments', 'storeComment');
+Route::prefix('tickets')->middleware(['auth:sanctum'])->controller(TicketController::class)->group(function () {
+  Route::get('', 'index');
+  Route::post('', 'store');
+  Route::get('{uuid}', 'show');
+  Route::put('{uuid}/close', 'close');
+  Route::post('{uuid}/messages', 'storeMessage');
 });
+
+Route::prefix('projects')->controller(ProjectController::class)->group(function () {
+  Route::get('/{uuid}/comments', 'getComments');
+  Route::get('/', 'index');
+  Route::get('/{uuid}', 'show');
+  Route::middleware(['auth:sanctum'])->controller(ProjectController::class)->group(function () {
+  
+    Route::post('/{uuid}/comments', 'storeComment');
+    
+  });
+
+
+
+
+});
+
 
 
 
@@ -38,6 +57,13 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::get('/', 'index');
   });
   
+  Route::prefix('tickets')->controller(AdminTicketController::class)->group(function () {
+    Route::get('', 'getTickets');
+    Route::get('{uuid}', 'showTicket');
+    Route::put('{uuid}/status', 'changeTicketStatus');
+    Route::post('{uuid}/message', 'storeMessage');
+});
+
   Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index');
   });
@@ -47,6 +73,10 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::post('/{uuid}', 'update');
     Route::post('/{uuid}/media', 'uploadMedia');
   });
+  Route::prefix('projects/{uuid}')->controller(CommentController::class)->group(function () {
+    Route::get('comments', 'getProjectComments');
+    Route::put('comments/{comment_uuid}/verify', 'verifyProjectComment');
+});
 });
 
 

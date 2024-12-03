@@ -2,7 +2,6 @@
 
 namespace App\Models;
 use App\Traits\HasUuid;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -32,8 +31,5 @@ class Comment extends Model
         return $this->morphTo();
     }
 
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
+
 }

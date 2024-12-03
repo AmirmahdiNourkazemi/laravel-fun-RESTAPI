@@ -38,6 +38,34 @@ class ProjectController extends Controller
         $projects = Project::orderBy('priority')->get();
         return $projects;
     }
+    public function getComments(Request $request, $uuid)
+    {
+        $data = $request->validate([
+            'per_page' => 'integer',
+        ]);
+
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        return $project->comments()
+            ->whereNull('parent_id')
+            ->with(['user', 'replies' => fn ($q) => $q->where('verified', true)])
+            ->where('verified', true)
+            ->paginate($data['per_page'] ?? 30);
+    }
+    public function show($uuid)
+    {
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        return $project;
+    }
     public function update(Request $request, $uuid)
     {
         $data = $request->validate([
@@ -77,7 +105,7 @@ class ProjectController extends Controller
             'name' => 'string',
             'file' => 'file|required',
         ]);
-        if (!$project = Project::withTrashed()->where('uuid', $uuid)->first()) {
+        if (!$project = Project::where('uuid', $uuid)->first()) {
             return response()->json([
                 'message' => 'project not found'
             ], 404);

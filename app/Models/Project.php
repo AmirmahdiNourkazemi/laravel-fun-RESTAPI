@@ -24,4 +24,5 @@ class Project extends Model implements HasMedia
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
+
 }
