@@ -16,6 +16,12 @@ class Project extends Model implements HasMedia
     protected $appends = ['images'];
     protected $hidden = ['media'];
     protected $with = ['media'];
+    protected $casts = [
+        'finish_at' => 'datetime',
+        'start_at' => 'datetime',
+        'properties' => 'array',
+        'time_table' => 'array',
+    ];
     public function getImagesAttribute()
     {
         return $this->media->where('collection_name', 'images')->map->only(['uuid', 'original_url', 'name', 'collection_name'])->values();

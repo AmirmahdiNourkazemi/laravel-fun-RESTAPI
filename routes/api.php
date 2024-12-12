@@ -72,6 +72,8 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
     Route::get('/', 'index');
     Route::post('/{uuid}', 'update');
     Route::post('/{uuid}/media', 'uploadMedia');
+    Route::delete('/{uuid}', 'forceDelete');
+    Route::delete('/{uuid}/media/{media_uuid}', 'deleteMedia');
   });
   Route::prefix('projects/{uuid}')->controller(CommentController::class)->group(function () {
     Route::get('comments', 'getProjectComments');

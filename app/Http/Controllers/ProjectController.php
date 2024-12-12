@@ -87,14 +87,14 @@ class ProjectController extends Controller
             'time_table.*.title' => 'required|string',
             'time_table.*.date' => 'date|string',
         ]);
-
-        // if (!$project = Project::withTrashed()->where('uuid', $uuid)->first()) {
-        //     return response()->json([
-        //         'message' => 'project not found'
-        //     ], 404);
-        // }
         $user = auth()->user();
-        return $request;
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+        $project->update($data);
+        return $project;
     }
 
 
@@ -147,5 +147,32 @@ class ProjectController extends Controller
             'message' => 'success'
         ]);
     }  
+    public function forceDelete($uuid)
+    {
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        $project->forceDelete();
+
+        return $project;
+    }
+
+    public function deleteMedia(Request $request, $uuid, $mediaUuid)
+    {
+        if (!$project = Project::where('uuid', $uuid)->first()) {
+            return response()->json([
+                'message' => 'project not found'
+            ], 404);
+        }
+
+        $project->media->where('uuid', $mediaUuid)->first()->delete();
+
+        return response()->json([
+            'message' => 'media deleted'
+        ]);
+    }
 
 }
