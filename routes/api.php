@@ -9,6 +9,8 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AdminTicketController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\AdminDepositController;
+use App\Http\Controllers\DepositController;
 
 Route::prefix('auth')->controller(AuthController::class)->group(function(){
     Route::post('login','login');
@@ -29,7 +31,10 @@ Route::prefix('tickets')->middleware(['auth:sanctum'])->controller(TicketControl
   Route::put('{uuid}/close', 'close');
   Route::post('{uuid}/messages', 'storeMessage');
 });
-
+Route::prefix('deposits')->middleware(['auth:sanctum'])->controller(DepositController::class)->group(function () {
+  Route::get('/', 'index');
+  Route::post('/', 'store');
+});
 Route::prefix('projects')->controller(ProjectController::class)->group(function () {
   Route::get('/{uuid}/comments', 'getComments');
   Route::get('/', 'index');
@@ -40,16 +45,25 @@ Route::prefix('projects')->controller(ProjectController::class)->group(function 
     
   });
 
-
-
-
 });
 
 
-
+Route::middleware(['auth:sanctum'])->prefix('user')->controller(UserController::class)->group(function () {
+  Route::get('/profile', 'getProfile');
+});
 
 //admin
 Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+
+
+  Route::prefix('deposits')->controller(AdminDepositController::class)->group(function () {
+    Route::get('', 'getDeposits');
+    Route::post('{deposit_uuid}', 'changeDepositStatus');
+    Route::put('{deposit_uuid}/status', 'changeDepositStatus');
+    Route::patch('{deposit_uuid}', 'update');
+});
+
+
   Route::prefix('companies')->controller(CompaniesController::class)->group(function () {
     Route::get('/', 'index');
   });
@@ -66,6 +80,7 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 
   Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index');
+    Route::get('/profile', 'getProfile');
   });
   Route::prefix('project')->controller(ProjectController::class)->group(function () {
     Route::post('/', 'store');

@@ -18,5 +18,28 @@ class User extends Authenticatable
     public function comments(){
         return $this->hasMany(Comment::class);
     }
-    
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class, 'user_project')->withPivot(['amount', 'id', 'public', 'trace_code'])->withTimestamps();
+    }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_project')->withPivot(['amount', 'id', 'public', 'trace_code'])->withTimestamps();
+    }
+    public function firstProject()
+    {
+        return $this->belongsToMany(Project::class, 'user_project')->withPivot(['amount', 'id', 'public', 'trace_code'])->withTimestamps()->orderBy('user_project.created_at');
+    }
+    public function paymentTransactions()
+    {
+        return $this->hasMany(PaymentTransaction::class);
+    }
 }

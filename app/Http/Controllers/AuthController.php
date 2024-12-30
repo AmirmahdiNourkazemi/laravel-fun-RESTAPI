@@ -31,7 +31,7 @@ class AuthController extends Controller
     } 
     else {
         return response()->json([
-            'message' => 'error',
+            'message' => 'لطفا ثبت نام کنید',
         ], 401);
     }
     
