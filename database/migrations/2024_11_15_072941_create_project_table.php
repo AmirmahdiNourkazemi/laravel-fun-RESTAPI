@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedSmallInteger('status')->default(1);
             $table->unsignedBigInteger('min_invest');
             $table->unsignedBigInteger('fund_needed');
-            $table->unsignedBigInteger('fund_achieved')->nullable();
+            $table->unsignedBigInteger('fund_achieved')->default(0);
             $table->float('expected_profit');
             $table->float('profit')->default(0);
             $table->unsignedSmallInteger('priority')->default(1);

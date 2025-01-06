@@ -58,16 +58,16 @@ class Project extends Model implements HasMedia
         ]);
 
         $this->increment('fund_achieved', $amount);
-
+        
         // $response = IFBApi::sendFinancingProvider($this->ifb_uuid, $user, $amount, $refId ?? rand(10000, 99999));
-
+        $transaction->save();
        
         return response()->json([
             $transaction
         ]);
 
             // $transaction->trace_code = $response['trace_code'];
-            $transaction->save();
+           
 
             // $this->users()->updateExistingPivot($user->id, [
             //     'trace_code' => $response['trace_code']
