@@ -11,6 +11,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
     protected $fillable = ['type' , 'name' , 'email' , 'mobile' , 'national_code' , 'uuid' , 'is_admin'];
+    protected $casts = [
+        'type' => 'boolean',
+        'is_admin' => 'boolean',
+    ];
     public function companies()
     {
         return $this->hasMany(Companies::class);

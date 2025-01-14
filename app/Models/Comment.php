@@ -11,6 +11,9 @@ class Comment extends Model
     use HasFactory, HasUuid;
     protected $guarded = []; 
     protected $with = ['user'];
+    protected $casts = [
+        'verified' => 'boolean',
+    ];
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -19,6 +22,7 @@ class Comment extends Model
     {
         return $this->belongsTo(Comment::class, 'parent_id');
     }
+
 
 
     public function replies()
