@@ -56,6 +56,9 @@ Route::middleware(['auth:sanctum'])->prefix('user')->controller(UserController::
 Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
 
 
+
+
+
   Route::prefix('deposits')->controller(AdminDepositController::class)->group(function () {
     Route::get('', 'getDeposits');
     Route::post('{deposit_uuid}', 'changeDepositStatus');
@@ -81,6 +84,7 @@ Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
   Route::prefix('user')->controller(UserController::class)->group(function () {
     Route::get('/', 'index');
     Route::get('/profile', 'getProfile');
+    Route::get('/{uuid}', 'show');
   });
   Route::prefix('project')->controller(ProjectController::class)->group(function () {
     Route::post('/', 'store');

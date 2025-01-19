@@ -15,6 +15,12 @@ class UserController extends Controller
         $users = User::paginate($perPage);
         return $users;
     }
+
+    public function show(Request $request, $uuid) 
+    {
+        $user = User::where('uuid', $uuid)->with('projects')->first();
+        return $user;
+    }
     
     public function getProfile()
     {
