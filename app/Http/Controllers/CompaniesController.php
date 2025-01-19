@@ -5,13 +5,14 @@ use App\Models\Companies;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CompaniesController extends Controller
 {
     public function index() 
     {
         $user = auth()->user();
-        $companies = $user->companies()->paginate();
+        $companies = DB::table('companies')->paginate();
         return $companies;
     }
 
